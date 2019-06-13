@@ -510,11 +510,15 @@ Feature: Outputting expected Algebraic Type matching methods
         __block id result = nil;
 
         SimpleADTSubtypeAMatchHandler matchSubtypeA = ^(void) {
-          result = subtypeAMatchHandler();
+          if (subtypeAMatchHandler) {
+            result = subtypeAMatchHandler();
+          }
         };
 
         SimpleADTSubtypeBMatchHandler matchSubtypeB = ^(void) {
-          result = subtypeBMatchHandler();
+          if (subtypeBMatchHandler) {
+            result = subtypeBMatchHandler();
+          }
         };
 
         [simpleADT matchSubtypeA:matchSubtypeA subtypeB:matchSubtypeB];

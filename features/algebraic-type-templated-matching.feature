@@ -44,19 +44,27 @@ Feature: Outputting Algebraic Types With Templated Matching
           __block std::unique_ptr<T> result;
 
           SimpleADTFirstSubtypeMatchHandler matchFirstSubtype = ^(NSString *firstValue, NSUInteger secondValue) {
-            result = std::make_unique<T>(firstSubtypeMatchHandler(firstValue, secondValue));
+            if (firstSubtypeMatchHandler) {
+              result = std::make_unique<T>(firstSubtypeMatchHandler(firstValue, secondValue));
+            }
           };
 
           SimpleADTSomeRandomSubtypeMatchHandler matchSomeRandomSubtype = ^(void) {
-            result = std::make_unique<T>(someRandomSubtypeMatchHandler());
+            if (someRandomSubtypeMatchHandler) {
+              result = std::make_unique<T>(someRandomSubtypeMatchHandler());
+            }
           };
 
           SimpleADTSomeAttributeSubtypeMatchHandler matchSomeAttributeSubtype = ^(NSUInteger someAttributeSubtype) {
-            result = std::make_unique<T>(someAttributeSubtypeMatchHandler(someAttributeSubtype));
+            if (someAttributeSubtypeMatchHandler) {
+              result = std::make_unique<T>(someAttributeSubtypeMatchHandler(someAttributeSubtype));
+            }
           };
 
           SimpleADTSecondSubtypeMatchHandler matchSecondSubtype = ^(BOOL something) {
-            result = std::make_unique<T>(secondSubtypeMatchHandler(something));
+            if (secondSubtypeMatchHandler) {
+              result = std::make_unique<T>(secondSubtypeMatchHandler(something));
+            }
           };
 
           [simpleADT matchFirstSubtype:matchFirstSubtype someRandomSubtype:matchSomeRandomSubtype someAttributeSubtype:matchSomeAttributeSubtype secondSubtype:matchSecondSubtype];

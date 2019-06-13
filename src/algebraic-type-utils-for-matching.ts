@@ -77,15 +77,14 @@ export function buildLocalFunctionBlockDefinitionsForSubtype(
     ' = ^(' +
     paramList +
     ') {';
-  const blockBody: string = blockInvocationWrapper(
-    matchBlockNameForSubtype(subtype) +
-      '(' +
-      blockType.parameters.map(nameOfBlockTypeParameter).join(', ') +
-      ')',
-  );
-  const end: string[] = ['};', ''];
-  const blockCode: string[] = [start]
-    .concat(StringUtils.indent(2)(blockBody))
+  const blockBody = ['if (' + matchBlockNameForSubtype(subtype) + ') {',
+    StringUtils.indent(2)(
+      blockInvocationWrapper(matchBlockNameForSubtype(subtype) +
+        '(' + blockType.parameters.map(nameOfBlockTypeParameter).join(', ') + ')')),
+    '}'];
+  const end = ['};', ''];
+  const blockCode = [start]
+    .concat(blockBody.map(StringUtils.indent(2)))
     .concat(end);
   return blockCode;
 }

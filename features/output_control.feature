@@ -185,11 +185,15 @@ Feature: Controlling exactly what is output when generating files.
           __block std::unique_ptr<T> result;
 
           RMValueTypeSingleFileOptionOneMatchHandler matchOptionOne = ^(void) {
-            result = std::make_unique<T>(optionOneMatchHandler());
+            if (optionOneMatchHandler) {
+              result = std::make_unique<T>(optionOneMatchHandler());
+            }
           };
 
           RMValueTypeSingleFileOptionTwoMatchHandler matchOptionTwo = ^(void) {
-            result = std::make_unique<T>(optionTwoMatchHandler());
+            if (optionTwoMatchHandler) {
+              result = std::make_unique<T>(optionTwoMatchHandler());
+            }
           };
 
           [valueTypeSingleFile matchOptionOne:matchOptionOne optionTwo:matchOptionTwo];
